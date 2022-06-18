@@ -2,6 +2,7 @@ package org.polik.polikmarket.exceptions;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Error> handleNotFound() {
         return createResponseEntity(HttpStatus.NOT_FOUND, NOT_FOUND_MESSAGE);
+    }
+
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<Error> handlePSQLException() {
+        return createResponseEntity(HttpStatus.NOT_FOUND, VALIDATION_MESSAGE);
     }
 
     @Override

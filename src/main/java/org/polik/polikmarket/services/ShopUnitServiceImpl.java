@@ -62,7 +62,6 @@ public class ShopUnitServiceImpl implements ShopUnitService {
         log.info("get {}", id);
         return ShopUnitUtil.setChildren(
                 jdbcTemplate.query(SQLUtil.RECURSIVE_SEARCH_QUERY, MAPPER, id), id
-//                repository.getShopUnit(id), id
         );
     }
 

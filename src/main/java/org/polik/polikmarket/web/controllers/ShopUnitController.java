@@ -1,6 +1,7 @@
 package org.polik.polikmarket.web.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.polik.polikmarket.models.shopunit.ShopUnit;
 import org.polik.polikmarket.services.ShopUnitService;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
@@ -28,6 +29,7 @@ public class ShopUnitController {
         service.handleImport(request);
     }
 
+    @SneakyThrows
     @GetMapping("/nodes/{id}")
     public ShopUnit get(@PathVariable UUID id) {
         return service.get(id);
@@ -42,5 +44,10 @@ public class ShopUnitController {
     public ShopUnitStatisticResponse getOffersBetween(
             @RequestParam @DateTimeFormat(iso = DATE_TIME) LocalDateTime date) {
         return service.getOffersBetween(date.minusDays(1), date);
+    }
+
+    @GetMapping("/node/{id}/statistic")
+    public ShopUnitStatisticResponse getStatistic(@PathVariable UUID id) {
+        throw new UnsupportedOperationException("I say so!");
     }
 }

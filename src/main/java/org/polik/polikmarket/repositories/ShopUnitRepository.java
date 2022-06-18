@@ -21,10 +21,6 @@ import java.util.UUID;
 public interface ShopUnitRepository extends JpaRepository<ShopUnitEntity, UUID> {
     Optional<ShopUnitEntity> findByIdAndType(UUID id, ShopUnitType type);
 
-//    @Query(nativeQuery = true , name = "ShopUnit.getShopUnit")
-//    @Deprecated(forRemoval = true)
-//    Set<ShopUnit> getShopUnit(@Param("id") UUID id);
-
     @Transactional
     @Modifying
     @Query("delete from ShopUnitEntity u where u.id=?1")

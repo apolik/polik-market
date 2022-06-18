@@ -67,6 +67,54 @@ public class SQLUtil {
                      ORDER BY id
                      """;
 
+    public static final String INSERT_QUERY = """
+            INSERT INTO shop_unit (id,
+                                   name,
+                                   parent_id,
+                                   price,
+                                   type,
+                                   date)
+            VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+            ON CONFLICT (id) DO UPDATE
+                SET name      = ?2,
+                    parent_id = ?3,
+                    price     = ?4,
+                    type      = ?5,
+                    date      = ?6 ;
+
+            with recursive unit_tree as (
+                         SELECT
+                             s1.id,
+                             s1.name,
+                             s1.price,
+                             s1.date,
+                             s1.parent_id,
+                             s1.type
+                         FROM
+                           shop_unit s1
+                         WHERE
+                           s1.id = ?1
+                           
+                         UNION ALL
+                                                 
+                         SELECT
+                           s2.id,
+                           s2.name,
+                           s2.price,
+                           s2.date,
+                           s2.parent_id,
+                           s2.type
+                         FROM
+                           shop_unit s2
+                           JOIN unit_tree ut ON ut.parent_id = s2.id
+                     )
+                     
+                        UPDATE shop_unit u
+                        SET date = ?6
+                        FROM unit_tree tr
+                        WHERE u.id = tr.id
+            """;
+
     public static final String RECURSIVE_DATE_UPDATE_QUERY = """
             with recursive unit_tree as (
                          SELECT
@@ -101,4 +149,6 @@ public class SQLUtil {
                         WHERE u.id = tr.id
                        
             """;
+
+
 }
