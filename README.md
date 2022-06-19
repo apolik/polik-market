@@ -5,7 +5,18 @@
 > а пользователям - смотреть какие товары были обновлены за последние сутки, а также следить за динамикой
 >  цен товара или категории за указанный интервал времени.
 ## Используемые технологии:
-> Java 17, Spring Boot/MVC/Data, PostgreSQL, Jib, Docker, Springdoc OpenApi, Caffeine Cache, SLF4J, Json Jackson, JUnit 5, 
-> Hamcrest, AssertJ
+> Java 17, Spring Boot/MVC/Data, PostgreSQL, Jib, Docker, Springdoc OpenApi, Caffeine Cache, SLF4J, Json Jackson, 
+> JUnit 5, Hamcrest, AssertJ
 ## Запуск супер-пупер-мега-маркета:
-- mvn spring-boot:run
+- Клонировать этот репозиторий
+- Перейти в корневую директорию проекта
+- Выполнить команду 'docker-compose up'
+## Запуск тестов:
+Для корректного запуска тестов, должны быть установлены Java 17+ и Maven
+```
+ mvn spring-boot:test
+```
+## Api документация:
+```
+ localhost/api-docs
+```
