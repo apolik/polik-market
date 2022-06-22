@@ -1,6 +1,6 @@
 package org.polik.polikmarket.services;
 
-import org.polik.polikmarket.models.shopunit.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnit;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
 import org.polik.polikmarket.web.responses.ShopUnitStatisticResponse;
 
@@ -18,4 +18,6 @@ public interface ShopUnitService {
     void delete(UUID id);
 
     ShopUnitStatisticResponse getOffersBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    ShopUnitStatisticResponse getStatisticBetween(UUID id, LocalDateTime dateStart, LocalDateTime dateEnd);
 }

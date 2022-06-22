@@ -2,11 +2,12 @@ package org.polik.polikmarket.web.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.polik.polikmarket.models.shopunit.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnit;
 import org.polik.polikmarket.services.ShopUnitService;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
 import org.polik.polikmarket.web.responses.ShopUnitStatisticResponse;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,13 +42,17 @@ public class ShopUnitController {
     }
 
     @GetMapping("/sales")
-    public ShopUnitStatisticResponse getOffersBetween(
+    public ShopUnitStatisticResponse getSales(
             @RequestParam @DateTimeFormat(iso = DATE_TIME) LocalDateTime date) {
         return service.getOffersBetween(date.minusDays(1), date);
     }
 
     @GetMapping("/node/{id}/statistic")
-    public ShopUnitStatisticResponse getStatistic(@PathVariable UUID id) {
-        throw new UnsupportedOperationException("I say so!");
+    public ShopUnitStatisticResponse getStatistic(@PathVariable UUID id,
+                                                  @RequestParam @Nullable @DateTimeFormat(iso = DATE_TIME) LocalDateTime dateStart,
+                                                  @RequestParam @Nullable @DateTimeFormat(iso = DATE_TIME) LocalDateTime dateEnd) {
+
+
+        return service.getStatisticBetween(id, dateStart, dateEnd);
     }
 }

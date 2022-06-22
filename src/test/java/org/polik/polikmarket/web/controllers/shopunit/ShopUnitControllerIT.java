@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.polik.polikmarket.web.controllers.shopunit.ShopUnitTestData.*;
+import static org.polik.polikmarket.ShopUnitTestData.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,6 +85,7 @@ class ShopUnitControllerIT extends AbstractControllerIT {
         perform(MockMvcRequestBuilders.delete(DELETE_REST_URL + TVS_ID))
                 .andExpect(status().isOk());
 
+        assertThrows(NotFoundException.class, () -> service.get(TVS_ID));
         assertThrows(NotFoundException.class, () -> service.get(SAMSON70_ID));
     }
 

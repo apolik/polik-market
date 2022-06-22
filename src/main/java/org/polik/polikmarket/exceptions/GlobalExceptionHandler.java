@@ -41,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<Error> handlePSQLException() {
-        return createResponseEntity(HttpStatus.NOT_FOUND, VALIDATION_MESSAGE);
+        return createResponseEntity(HttpStatus.BAD_REQUEST, VALIDATION_MESSAGE);
     }
 
     @Override

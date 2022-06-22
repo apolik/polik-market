@@ -2,10 +2,12 @@ package org.polik.polikmarket.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.polik.polikmarket.models.shopunit.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnit;
 import org.polik.polikmarket.models.shopunit.ShopUnitEntity;
+import org.polik.polikmarket.models.shopunit.ShopUnitStatisticEntity;
 import org.polik.polikmarket.models.shopunit.ShopUnitType;
 import org.polik.polikmarket.repositories.ShopUnitRepository;
+import org.polik.polikmarket.repositories.ShopUnitStatisticRepository;
 import org.polik.polikmarket.utils.SQLUtil;
 import org.polik.polikmarket.utils.ShopUnitUtil;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
@@ -16,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,25 +41,31 @@ public class ShopUnitServiceImpl implements ShopUnitService {
     public static final RowMapper<ShopUnit> MAPPER = new BeanPropertyRowMapper<>(ShopUnit.class);
 
     private final ShopUnitRepository repository;
+    private final ShopUnitStatisticRepository statisticRepository;
     private final JdbcTemplate jdbcTemplate;
 
+    @Override
     @Transactional
     @CacheEvict(allEntries = true)
     public void handleImport(ShopUnitImportRequest request) {
         log.info("handleImport {}", request);
 
-        request.items().forEach(unitImport -> {
-            rejectIfInvalidType(unitImport);
-            ShopUnitEntity parent = getParent(unitImport.getParentId());
+        request.items().forEach(unit -> {
+            rejectIfInvalidType(unit);
+            ShopUnitEntity parent = getParent(unit.getParentId());
 
             repository.save(fromImport(
-                    unitImport, request.updateDate(), parent
+                    unit, request.updateDate(), parent
             ));
+            statisticRepository.save(
+                    new ShopUnitStatisticEntity(unit, request.updateDate())
+            );
         });
 
-        repository.updateDate(request.updateDate());
+        repository.updateDate(request.updateDate()); // Updates date property for categories
     }
 
+    @Override
     @Cacheable(key = "#id")
     public ShopUnit get(UUID id) {
         log.info("get {}", id);
@@ -65,12 +74,11 @@ public class ShopUnitServiceImpl implements ShopUnitService {
         );
     }
 
+    @Override
     public ShopUnitStatisticResponse getOffersBetween(LocalDateTime startDate, LocalDateTime endDate) {
         log.info("getOffersBetween {} - {}", startDate, endDate);
         Set<ShopUnitEntity> units = repository.findAllByDateBetweenAndType(
-                startDate,
-                endDate,
-                ShopUnitType.OFFER
+                startDate, endDate, ShopUnitType.OFFER
         );
 
         return new ShopUnitStatisticResponse(
@@ -78,6 +86,14 @@ public class ShopUnitServiceImpl implements ShopUnitService {
         );
     }
 
+    @Override
+    public ShopUnitStatisticResponse getStatisticBetween(UUID id, @Nullable LocalDateTime dateStart,
+                                                         @Nullable LocalDateTime dateEnd) {
+        log.info("getStatisticBetween {} - {}", dateStart, dateEnd);
+        return null;
+    }
+
+    @Override
     @CacheEvict(allEntries = true)
     public void delete(UUID id) {
         log.info("delete {}", id);

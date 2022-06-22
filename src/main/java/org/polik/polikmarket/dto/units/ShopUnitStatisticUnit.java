@@ -1,4 +1,4 @@
-package org.polik.polikmarket.dto.statistics;
+package org.polik.polikmarket.dto.units;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

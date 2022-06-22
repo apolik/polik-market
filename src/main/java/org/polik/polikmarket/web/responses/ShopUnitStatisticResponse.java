@@ -1,6 +1,6 @@
 package org.polik.polikmarket.web.responses;
 
-import org.polik.polikmarket.dto.statistics.ShopUnitStatisticUnit;
+import org.polik.polikmarket.dto.units.ShopUnitStatisticUnit;
 
 import java.util.Set;
 

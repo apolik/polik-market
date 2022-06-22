@@ -2,9 +2,9 @@ package org.polik.polikmarket.utils;
 
 import lombok.experimental.UtilityClass;
 import org.polik.polikmarket.dto.imports.ShopUnitImport;
-import org.polik.polikmarket.dto.statistics.ShopUnitStatisticUnit;
+import org.polik.polikmarket.dto.units.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnitStatisticUnit;
 import org.polik.polikmarket.exceptions.NotFoundException;
-import org.polik.polikmarket.models.shopunit.ShopUnit;
 import org.polik.polikmarket.models.shopunit.ShopUnitEntity;
 import org.polik.polikmarket.models.shopunit.ShopUnitType;
 

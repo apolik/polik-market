@@ -1,9 +1,8 @@
-package org.polik.polikmarket.web.controllers.shopunit;
+package org.polik.polikmarket;
 
 import lombok.experimental.UtilityClass;
-import org.polik.polikmarket.MatcherFactory;
 import org.polik.polikmarket.dto.imports.ShopUnitImport;
-import org.polik.polikmarket.models.shopunit.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnit;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
 
 import java.time.LocalDateTime;

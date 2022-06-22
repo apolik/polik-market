@@ -1,8 +1,9 @@
-package org.polik.polikmarket.models.shopunit;
+package org.polik.polikmarket.dto.units;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.polik.polikmarket.models.shopunit.ShopUnitType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
