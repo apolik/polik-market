@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.polik.polikmarket.models.shopunit.ShopUnitType.CATEGORY;
-import static org.polik.polikmarket.models.shopunit.ShopUnitType.OFFER;
+import static org.polik.polikmarket.models.ShopUnitType.CATEGORY;
+import static org.polik.polikmarket.models.ShopUnitType.OFFER;
 
 /**
  * Created by Polik on 6/17/2022

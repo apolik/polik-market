@@ -3,9 +3,8 @@ package org.polik.polikmarket.dto.units;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.polik.polikmarket.models.shopunit.ShopUnitType;
+import org.polik.polikmarket.models.ShopUnitType;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,15 +27,6 @@ public class ShopUnit {
     private ShopUnitType type;
     private Long price;
     private Set<ShopUnit> children;
-
-    public ShopUnit(UUID id, String name, UUID parentId, LocalDateTime date, String type, BigDecimal price) {
-        this.id = id;
-        this.name = name;
-        this.parentId = parentId;
-        this.date = date;
-        this.type = ShopUnitType.valueOf(type);
-        this.price = price == null ? null : price.longValue();
-    }
 
     @JsonIgnore
     public void addChildren(ShopUnit unit) {

@@ -1,4 +1,4 @@
-package org.polik.polikmarket.models.shopunit;
+package org.polik.polikmarket.models;
 
 import lombok.*;
 import org.hibernate.annotations.OnDelete;

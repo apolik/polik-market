@@ -1,11 +1,10 @@
-package org.polik.polikmarket.models.shopunit;
+package org.polik.polikmarket.models;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.polik.polikmarket.dto.imports.ShopUnitImport;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,6 +16,8 @@ import java.util.UUID;
 @Setter
 @Table(name = "shop_unit_statistic")
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString
 public class ShopUnitStatisticEntity {
     @Id
     @GeneratedValue
@@ -47,6 +48,16 @@ public class ShopUnitStatisticEntity {
         this.type = unit.getType();
         this.price = unit.getPrice();
         this.parentId = unit.getParentId();
+        this.date = date;
+    }
+
+    public ShopUnitStatisticEntity(UUID id, UUID unitId, String name, UUID parentId, String type, BigDecimal price, LocalDateTime date) {
+        this.id = id;
+        this.unitId = unitId;
+        this.name = name;
+        this.parentId = parentId;
+        this.type = ShopUnitType.valueOf(type);
+        this.price = price.longValue();
         this.date = date;
     }
 }

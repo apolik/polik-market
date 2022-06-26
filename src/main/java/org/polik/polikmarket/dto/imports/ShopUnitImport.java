@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.polik.polikmarket.models.shopunit.ShopUnitType;
+import org.polik.polikmarket.models.ShopUnitType;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

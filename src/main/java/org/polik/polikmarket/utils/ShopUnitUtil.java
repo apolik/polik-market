@@ -5,8 +5,9 @@ import org.polik.polikmarket.dto.imports.ShopUnitImport;
 import org.polik.polikmarket.dto.units.ShopUnit;
 import org.polik.polikmarket.dto.units.ShopUnitStatisticUnit;
 import org.polik.polikmarket.exceptions.NotFoundException;
-import org.polik.polikmarket.models.shopunit.ShopUnitEntity;
-import org.polik.polikmarket.models.shopunit.ShopUnitType;
+import org.polik.polikmarket.models.ShopUnitEntity;
+import org.polik.polikmarket.models.ShopUnitStatisticEntity;
+import org.polik.polikmarket.models.ShopUnitType;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -29,10 +30,10 @@ public class ShopUnitUtil {
                 .build();
     }
 
-    public static Set<ShopUnitStatisticUnit> toStatisticUnits(Set<ShopUnitEntity> units) {
+    public static List<ShopUnitStatisticUnit> toStatisticUnits(Set<ShopUnitEntity> units) {
         return units.stream()
                 .map(ShopUnitStatisticUnit::new)
-                .collect(Collectors.toSet());
+                .toList();
     }
 
     public static ShopUnit getOrThrowNotFound(Optional<ShopUnit> shopUnit, UUID id) {
@@ -45,8 +46,8 @@ public class ShopUnitUtil {
 
     public static ShopUnit setChildren(Collection<ShopUnit> units, UUID id) {
         Map<UUID, ShopUnit> map = units.stream().collect(
-                        Collectors.toMap(ShopUnit::getId, unit -> unit)
-                );
+                Collectors.toMap(ShopUnit::getId, unit -> unit)
+        );
 
         units.forEach(unit -> {
             ShopUnit unit1 = map.get(unit.getParentId());
@@ -60,7 +61,14 @@ public class ShopUnitUtil {
         return getOrThrowNotFound(result, id);
     }
 
-    public static ShopUnitEntity getOrThrowValidationException(Optional<ShopUnitEntity> shopUnit, UUID id, ShopUnitType type) {
+    public static List<ShopUnitStatisticUnit> toStatisticUnits2(Collection<ShopUnitStatisticEntity> entities) {
+        return entities.stream()
+                .map(ShopUnitStatisticUnit::new)
+                .toList();
+    }
+
+    public static ShopUnitEntity getOrThrowValidationException(Optional<ShopUnitEntity> shopUnit,
+                                                               UUID id, ShopUnitType type) {
         return shopUnit.orElseThrow(
                 () -> new ValidationException(
                         String.format("No such shop unit for id: %s and type: %s", id, type.name())

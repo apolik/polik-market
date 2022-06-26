@@ -51,8 +51,6 @@ public class ShopUnitController {
     public ShopUnitStatisticResponse getStatistic(@PathVariable UUID id,
                                                   @RequestParam @Nullable @DateTimeFormat(iso = DATE_TIME) LocalDateTime dateStart,
                                                   @RequestParam @Nullable @DateTimeFormat(iso = DATE_TIME) LocalDateTime dateEnd) {
-
-
         return service.getStatisticBetween(id, dateStart, dateEnd);
     }
 }

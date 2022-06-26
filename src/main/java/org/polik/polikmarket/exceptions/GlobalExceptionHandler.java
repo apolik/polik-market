@@ -28,6 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String VALIDATION_MESSAGE = "Validation Failed";
     public static final String NOT_FOUND_MESSAGE = "Item not found";
     public static final String INTERNAL_ERROR_MESSAGE = "Internal error";
+    public static final String NO_SUCH_SHOP_UNIT_MESSAGE = "No such shop unit with id: %s";
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Error> handleValidationException() {

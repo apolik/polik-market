@@ -3,9 +3,9 @@ package org.polik.polikmarket.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.polik.polikmarket.dto.units.ShopUnit;
-import org.polik.polikmarket.models.shopunit.ShopUnitEntity;
-import org.polik.polikmarket.models.shopunit.ShopUnitStatisticEntity;
-import org.polik.polikmarket.models.shopunit.ShopUnitType;
+import org.polik.polikmarket.models.ShopUnitEntity;
+import org.polik.polikmarket.models.ShopUnitStatisticEntity;
+import org.polik.polikmarket.models.ShopUnitType;
 import org.polik.polikmarket.repositories.ShopUnitRepository;
 import org.polik.polikmarket.repositories.ShopUnitStatisticRepository;
 import org.polik.polikmarket.utils.SQLUtil;
@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.polik.polikmarket.utils.ShopUnitUtil.*;
-import static org.polik.polikmarket.utils.ValidationUtil.checkModification;
 import static org.polik.polikmarket.utils.ValidationUtil.rejectIfInvalidType;
 
 /**
@@ -54,15 +53,15 @@ public class ShopUnitServiceImpl implements ShopUnitService {
             rejectIfInvalidType(unit);
             ShopUnitEntity parent = getParent(unit.getParentId());
 
-            repository.save(fromImport(
-                    unit, request.updateDate(), parent
-            ));
+            repository.save(
+                    fromImport(unit, request.updateDate(), parent)
+            );
             statisticRepository.save(
                     new ShopUnitStatisticEntity(unit, request.updateDate())
             );
         });
 
-        repository.updateDate(request.updateDate()); // Updates date property for categories
+        repository.updateDate(request.updateDate()); // Update date property for categories
     }
 
     @Override
@@ -72,6 +71,15 @@ public class ShopUnitServiceImpl implements ShopUnitService {
         return ShopUnitUtil.setChildren(
                 jdbcTemplate.query(SQLUtil.RECURSIVE_SEARCH_QUERY, MAPPER, id), id
         );
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(allEntries = true)
+    public void delete(UUID id) {
+        log.info("delete {}", id);
+        repository.deleteExisted(id);
+        statisticRepository.delete(id);
     }
 
     @Override
@@ -90,17 +98,11 @@ public class ShopUnitServiceImpl implements ShopUnitService {
     public ShopUnitStatisticResponse getStatisticBetween(UUID id, @Nullable LocalDateTime dateStart,
                                                          @Nullable LocalDateTime dateEnd) {
         log.info("getStatisticBetween {} - {}", dateStart, dateEnd);
-        return null;
-    }
-
-    @Override
-    @CacheEvict(allEntries = true)
-    public void delete(UUID id) {
-        log.info("delete {}", id);
-        checkModification(
-                repository.delete(id),
-                String.format("No such shop unit with id: %s", id)
+        Set<ShopUnitStatisticEntity> units = statisticRepository.findBetween(
+                id, dateStart, dateEnd
         );
+
+        return new ShopUnitStatisticResponse(toStatisticUnits2(units));
     }
 
     private ShopUnitEntity getParent(UUID parentId) {

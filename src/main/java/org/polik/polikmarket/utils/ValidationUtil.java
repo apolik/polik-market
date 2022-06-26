@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.polik.polikmarket.dto.imports.ShopUnitImport;
 import org.polik.polikmarket.exceptions.GlobalExceptionHandler;
 import org.polik.polikmarket.exceptions.NotFoundException;
-import org.polik.polikmarket.models.shopunit.ShopUnitType;
+import org.polik.polikmarket.models.ShopUnitType;
 
 import javax.validation.ValidationException;
 
