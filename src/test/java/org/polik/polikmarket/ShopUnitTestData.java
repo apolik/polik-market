@@ -3,12 +3,15 @@ package org.polik.polikmarket;
 import lombok.experimental.UtilityClass;
 import org.polik.polikmarket.dto.imports.ShopUnitImport;
 import org.polik.polikmarket.dto.units.ShopUnit;
+import org.polik.polikmarket.dto.units.ShopUnitStatisticUnit;
 import org.polik.polikmarket.web.requests.ShopUnitImportRequest;
+import org.polik.polikmarket.web.responses.ShopUnitStatisticResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.polik.polikmarket.models.ShopUnitType.CATEGORY;
 import static org.polik.polikmarket.models.ShopUnitType.OFFER;
@@ -19,6 +22,7 @@ import static org.polik.polikmarket.models.ShopUnitType.OFFER;
 @UtilityClass
 public class ShopUnitTestData {
     public static final MatcherFactory.Matcher<ShopUnit> SHOP_UNIT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(ShopUnit.class);
+    public static final MatcherFactory.Matcher<ShopUnitStatisticResponse> STATISTIC_RESPONSE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(ShopUnitStatisticResponse.class);
 
     public static final ShopUnit goods;
     public static final ShopUnit smartphones;
@@ -66,6 +70,12 @@ public class ShopUnitTestData {
                 List.of(new ShopUnitImport(xomia10.getId(), "обновленный супер-пупер-дупер xomia 10", xomia10.getParentId(), xomia10.getType(), 777L)),
                 LocalDateTime.now()
         );
+    }
+
+    public static List<ShopUnitStatisticUnit> sales() {
+        return Stream.of(jphone13, xomia10)
+                .map(ShopUnitStatisticUnit::new)
+                .toList();
     }
 
     static {

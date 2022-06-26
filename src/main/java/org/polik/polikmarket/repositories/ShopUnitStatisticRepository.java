@@ -23,4 +23,6 @@ public interface ShopUnitStatisticRepository extends JpaRepository<ShopUnitStati
     @Modifying
     @Query(nativeQuery = true, value = SQLUtil.RECURSIVE_DELETE_QUERY)
     void delete(UUID id);
+
+    boolean existsByUnitId(UUID unitId);
 }

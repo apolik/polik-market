@@ -2,6 +2,7 @@ package org.polik.polikmarket.dto.units;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.polik.polikmarket.models.ShopUnitEntity;
 import org.polik.polikmarket.models.ShopUnitStatisticEntity;
@@ -15,6 +16,7 @@ import java.util.UUID;
  */
 @Data
 @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
 @ToString
 public class ShopUnitStatisticUnit {
     private UUID id;
@@ -35,6 +37,15 @@ public class ShopUnitStatisticUnit {
 
     public ShopUnitStatisticUnit(ShopUnitStatisticEntity u) {
         this.id = u.getUnitId();
+        this.name = u.getName();
+        this.parentId = u.getParentId();
+        this.type = u.getType();
+        this.date = u.getDate();
+        this.price = u.getPrice();
+    }
+
+    public ShopUnitStatisticUnit(ShopUnit u) {
+        this.id = u.getId();
         this.name = u.getName();
         this.parentId = u.getParentId();
         this.type = u.getType();

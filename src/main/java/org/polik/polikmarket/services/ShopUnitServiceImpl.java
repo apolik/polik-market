@@ -3,6 +3,7 @@ package org.polik.polikmarket.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.polik.polikmarket.dto.units.ShopUnit;
+import org.polik.polikmarket.exceptions.NotFoundException;
 import org.polik.polikmarket.models.ShopUnitEntity;
 import org.polik.polikmarket.models.ShopUnitStatisticEntity;
 import org.polik.polikmarket.models.ShopUnitType;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.polik.polikmarket.exceptions.GlobalExceptionHandler.NO_SUCH_SHOP_UNIT_MESSAGE;
 import static org.polik.polikmarket.utils.ShopUnitUtil.*;
 import static org.polik.polikmarket.utils.ValidationUtil.rejectIfInvalidType;
 
@@ -98,11 +100,18 @@ public class ShopUnitServiceImpl implements ShopUnitService {
     public ShopUnitStatisticResponse getStatisticBetween(UUID id, @Nullable LocalDateTime dateStart,
                                                          @Nullable LocalDateTime dateEnd) {
         log.info("getStatisticBetween {} - {}", dateStart, dateEnd);
+        if (!statisticRepository.existsByUnitId(id)) {
+            throw new NotFoundException(String.format(NO_SUCH_SHOP_UNIT_MESSAGE, id));
+        }
+
+        // fixme: работает криво
         Set<ShopUnitStatisticEntity> units = statisticRepository.findBetween(
                 id, dateStart, dateEnd
         );
 
-        return new ShopUnitStatisticResponse(toStatisticUnits2(units));
+        return new ShopUnitStatisticResponse(
+                toStatisticUnits2(units)
+        );
     }
 
     private ShopUnitEntity getParent(UUID parentId) {

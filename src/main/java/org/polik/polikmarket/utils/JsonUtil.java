@@ -1,14 +1,12 @@
 package org.polik.polikmarket.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Polik on 6/17/2022
@@ -40,17 +38,6 @@ public class JsonUtil {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
         }
-    }
-
-    public static <T> String writeAdditionProps(T obj, String addName, Object addValue) {
-        return writeAdditionProps(obj, Map.of(addName, addValue));
-    }
-
-    public static <T> String writeAdditionProps(T obj, Map<String, Object> addProps) {
-        Map<String, Object> map = mapper.convertValue(obj, new TypeReference<>() {
-        });
-        map.putAll(addProps);
-        return writeValue(map);
     }
 
     public static void setMapper(ObjectMapper mapper) {
